@@ -1,11 +1,14 @@
 import firebase from "./config/FirebaseConfig";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import AppError from "./Errors/AppError";
+import {logger} from "./Utils/Logger";
+import {errorHandler} from "./Middleware/ErrorHandler";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -25,6 +28,9 @@ app.use((req, res) => {
     });
 })
 
+app.use(errorHandler)
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  logger.info(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
