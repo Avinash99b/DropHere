@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Connection with Firebase</title>
+    <style>
+        #chatBox {
+            display: none;
+            margin-top: 10px;
+        }
+        #connectBtn {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<h2>Peer-to-Peer Chat</h2>
+
+<div id="connectSection">
+    <input type="text" id="peerId" placeholder="Enter Peer ID">
+    <button id="connectBtn">Connect</button>
+</div>
+
+<div id="chatBox">
+    <div><b>Peer Chat</b></div>
+    <textarea id="chatLog" rows="10" cols="30" readonly></textarea><br>
+    <input type="text" id="messageInput" placeholder="Type a message">
+    <button id="sendMessageBtn">Send</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js"></script>
+
+
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-app-compat.js"></script>
+
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-database-compat.js"></script>
+
+
+
+
+<script type="module">
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyDl3sGEzkcuqdfnpVZ505T8bHlie0N21-s",
+        authDomain: "drop-here-446a7.firebaseapp.com",
+        databaseURL: "https://drop-here-446a7-default-rtdb.firebaseio.com",
+        projectId: "drop-here-446a7",
+        storageBucket: "drop-here-446a7.appspot.com",
+        messagingSenderId: "331320449177",
+        appId: "1:331320449177:web:3d857dddb91974e5560008",
+        measurementId: "G-F5VBPWM7QE"
+    };
+
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+
+    // Initialize PeerJS
+    let peer = new Peer();
+
+    let peerId = null;
+    let connection = null;
+
+    // When PeerJS is open and ready
+    peer.on('open', (id) => {
+        peerId = id;
+        console.log('My Peer ID is ' + id);
+
+        db.ref('peerConnections/' + id).on('value', value => {
+            const data = value.val();
+            if (data && data.status === 'waiting') {
+                // If the other peer is waiting, accept the connection
+                db.ref('peerConnections/' + id).set({
+                    status: 'accepted',
+                    toConnect: data.toConnect
+                });
+                connection = peer.connect(data.toConnect);
+                setupConnection();
+            }
+        });
+    });
+
+    // Handle incoming connections
+    peer.on('connection', (conn) => {
+        console.log('Connection received');
+        connection = conn;
+        setupConnection();
+    });
+
+    // When the "Connect" button is clicked
+    document.getElementById('connectBtn').addEventListener('click', () => {
+        const peerIdInput = document.getElementById('peerId').value;
+
+        if (peerIdInput) {
+            // Store the peer id in Firebase
+            db.ref('peerConnections/' + peerIdInput).set({
+                status: 'waiting',
+                toConnect: peerId
+            });
+
+            // Listen for a response from the other peer
+            db.ref('peerConnections/' + peerIdInput).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data && data.status === 'accepted') {
+                    // Connect to the other peer
+                    connection = peer.connect(peerIdInput);
+                    setupConnection();
+                }
+            });
+        }
+    });
+
+    // When the other peer accepts the connection
+    function setupConnection() {
+        connection.on('open', () => {
+            console.log('Connection established');
+            // Hide the "Connect" button and show the chat box
+            document.getElementById('connectSection').style.display = 'none';
+            document.getElementById('chatBox').style.display = 'block';
+
+            // Listen for incoming messages
+            connection.on('data', (data) => {
+                document.getElementById('chatLog').value += `Peer: ${data}\n`;
+            });
+        });
+
+        // Sending a message to the other peer
+        document.getElementById('sendMessageBtn').addEventListener('click', () => {
+            const message = document.getElementById('messageInput').value;
+            if (message && connection.open) {
+                connection.send(message);
+                document.getElementById('chatLog').value += `You: ${message}\n`;
+                document.getElementById('messageInput').value = ''; // Clear input
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
