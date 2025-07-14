@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🎯 Drophere Frontend (Next.js)
 
-First, run the development server:
+This is the **Next.js** frontend for the [Drophere](https://github.com/your-org/drophere) project — a **peer-to-peer, privacy-first file and message sharing platform**. This app uses **WebRTC** to create direct encrypted channels between browsers and Firebase Realtime Database as the default signaling backend.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ⚙️ Tech Stack
+
+- **Next.js** – React framework for building UI
+- **Firebase Realtime Database** – For offer/answer signaling
+- **WebRTC** – Direct peer-to-peer messaging + file transfer
+- **Web Crypto API** – Optional end-to-end encryption
+- **TailwindCSS** – For minimal and responsive design
+
+---
+
+## 📁 Folder Structure (Test )
+
+```text
+Frontend/
+├── src/
+│   └── app
+│       ├── page.tsx         # Main app UI
+│       └── app.tsx          # Global styles
+├── public/               # Static assets
+├── styles/
+│   └── globals.css       # Tailwind and global styles
+├── next.config.js
+├── package.json
+└── README.md             # You are here
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Feature               | Description                                                      |
+| ---------------------|------------------------------------------------------------------ |
+| 📡 WebRTC Signaling   | Create direct, encrypted P2P connections                         |
+| 🔐 End-to-End Crypto  | Uses Web Crypto API (optional AES layer before sending data)     |
+| 🧩 Firebase Adapter   | Uses Firebase Realtime DB for offer/answer exchange              |
+| 🧼 Stateless Frontend | No cookies, no accounts, no tracking                             |
+| 🌐 Serverless Ready   | Deployable to Vercel, Netlify, or static host                    |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🌍 Environment Variables (TEST)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy `.env.local.example` to `.env.local` and fill in your Firebase config:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+NEXT_PUBLIC_FIREBASE_DB_URL=https://your-project-id.firebaseio.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+```
 
-## Deploy on Vercel
+> ⚠️ These values are exposed to the client. Keep only necessary keys here.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Getting Started
+
+```bash
+git clone https://github.com/your-org/drophere.git
+cd drophere/Frontend
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
+
+Open your browser at [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 🧠 How It Works
+
+1. User A creates an "offer" via WebRTC.
+2. Offer is written to Firebase under a unique peer ID.
+3. User B loads the app with the peer ID, responds with an "answer".
+4. WebRTC `RTCPeerConnection` establishes a P2P DataChannel.
+5. Files/messages flow **directly** from peer to peer — encrypted.
+
+---
+
+## 🔐 Optional Encryption Layer
+
+You can enable AES-GCM or custom key-exchange encryption before sending messages/files. We use Web Crypto API for this:
+
+```ts
+// utils/encryption.ts (optional)
+const encrypted = await encryptWithAESGCM(data, sharedSecret);
+```
+
+---
+
+## 🧪 Testing
+
+You can simulate two peers by:
+
+1. Opening two browser tabs (or devices).
+2. Have one peer generate a session ID and wait.
+3. Second peer pastes session ID and connects.
+4. Begin file/message transfer.
+
+---
+
+## 📦 Production Deployment
+
+```bash
+# Build for production
+npm run build
+
+# Start server (e.g., on Vercel)
+npm run start
+```
+
+✅ Can be deployed to:
+- Vercel
+- Netlify (via adapter)
+- Static CDN (with export)
+- Firebase Hosting
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome!
+
+Add new features like:
+
+- 🔄 QR Code Sharing
+- 📦 Chunked File Transfer
+- 🌍 Fallback signaling layers (Redis, WebSocket)
+
+---
+
+## 📄 License
+
+MIT — Free to use, fork, and modify.
+
+---
+
+## 📬 Contact
+
+Open an issue or discussion on [GitHub](https://github.com/your-org/drophere).
