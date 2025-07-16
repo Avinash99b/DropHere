@@ -9,6 +9,7 @@
             display: none;
             margin-top: 10px;
         }
+
         #connectBtn {
             display: inline-block;
         }
@@ -36,8 +37,6 @@
 
 <!-- Firebase Realtime Database -->
 <script src="https://www.gstatic.com/firebasejs/11.7.1/firebase-database-compat.js"></script>
-
-
 
 
 <script type="module">
@@ -95,21 +94,31 @@
         const peerIdInput = document.getElementById('peerId').value;
 
         if (peerIdInput) {
-            // Store the peer id in Firebase
-            db.ref('peerConnections/' + peerIdInput).set({
-                status: 'waiting',
-                toConnect: peerId
-            });
 
-            // Listen for a response from the other peer
-            db.ref('peerConnections/' + peerIdInput).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data && data.status === 'accepted') {
-                    // Connect to the other peer
-                    connection = peer.connect(peerIdInput);
-                    setupConnection();
-                }
-            });
+            connection = peer.connect(peerIdInput);
+            setupConnection();
+            // Store the peer id in Firebase
+            // db.ref('peerConnections/' + peerId).set({
+            //     status: 'waiting',
+            //     toConnect: peerIdInput
+            // });
+
+            // // Listen for a response from the other peer
+            // db.ref('peerConnections/' + peerIdInput).on('value', (snapshot) => {
+            //     const data = snapshot.val();
+            //     console.log(data)
+            //     if (data.status === 'accepted') {
+            //         // Connect to the other peer
+            //         connection = peer.connect(peerIdInput);
+            //         setupConnection();
+            //     } else {
+            //         db.ref('peerConnections/' + peerIdInput).set({
+            //             status: 'accepted',
+            //             toConnect: data.toConnect
+            //         })
+            //     }
+            //
+            // });
         }
     });
 
