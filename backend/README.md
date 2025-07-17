@@ -40,9 +40,9 @@ Backend/
 ## ⚙️ Features
 
 | Feature                     | Description                                                           |
-| --------------------------- | --------------------------------------------------------------------- |
+|-----------------------------|-----------------------------------------------------------------------|
 | 🔐 No Message/File Storage  | This backend never stores actual file or message content.             |
-| 🔁 Firebase Signaling       | Uses Firebase to manage offer/answer signaling for WebRTC peers.      |
+| 🔁 PeerJS Signaling         | Uses PeerJS to automate offer/answer signaling for WebRTC peers.      |
 | 🧩 Modular Signaling Engine | Built to be easily extendable or replaceable (e.g. Redis, WebSocket). |
 | 🛡️ Privacy-Centric Design  | No user accounts, no logs, no surveillance.                           |
 | 🧼 Stateless Server         | Ideal for scaling and ephemeral communication sessions.               |

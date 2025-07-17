@@ -1,43 +1,41 @@
 import pool from "../config/DBConfig";
-import {TransferRow} from "../Types/Transfer";
+import TransferController from "./TransferController";
+import {TransferError, TransferErrorType} from "../Errors/TransferError";
+import {TransferType} from "../Types/Transfer";
+import {logger} from "../Utils/Logger";
+import {TextRow} from "../Types/Text";
 
 class TextTransferController {
-    static MAX_CODE_GEN_RETRIES = 5;
 
-    public static async storeText(text: string): Promise<number> {
+    public static storeText(text: string): Promise<number> {
 
-        let code = this.generateRandomSixDigitNumber()
-
-        for (let i = 0; i < this.MAX_CODE_GEN_RETRIES; i++) {
-            if (await this.textCodeExists(text)) {
-                code = this.generateRandomSixDigitNumber()
-            } else {
-                break;
+        return new Promise(async (resolve, reject) => {
+            const conn = await pool.connect();
+            await conn.query("BEGIN")
+            try{
+                const code = TransferController.createTransferRecord(TransferType.TEXT, conn)
+                await pool.query("Insert into texts(code,text) values (?,?)", [code, text])
+                await conn.query("COMMIT")
+                resolve(code)
+            }catch (e:any){
+                await conn.query("ROLLBACK")
+                reject(new TransferError(TransferErrorType.CREATE_TRANSFER_FAILED))
+                logger.error(e,"Failed to create transfer")
+            }finally {
+                conn.release()
             }
-            if (i == this.MAX_CODE_GEN_RETRIES - 1) throw new Error("Code Generation Failed for tries: " + this.MAX_CODE_GEN_RETRIES);
-        }
-
-        await pool.query("Insert into transfers(code,type) values (?,?)", [code, 'text'])
-
-        return code
+        })
     }
 
     public static async fetchText(receivingCode: string): Promise<string> {
-        if(!await this.textCodeExists(receivingCode)) {
-            throw new Error("Receiving Code Not Found")
-        }
+        const transferRecord =await TransferController.getTransferRecord(receivingCode);
+        if(transferRecord == null) throw new TransferError(TransferErrorType.TRANSFER_RECORD_NOT_FOUND);
 
-        const result = await pool.query("Select text from texts where code = ?", [receivingCode]);
+        if(transferRecord.type != TransferType.TEXT) throw new TransferError(TransferErrorType.MISMATCHED_RECORD_TYPE);
+
+        const result = await pool.query<TextRow>("Select text from texts where code = ?", [receivingCode]);
         return result.rows[0].text
     }
 
-    public static async textCodeExists(receivingCode: string): Promise<boolean> {
-        const result = await pool.query("Select count(*) from transfers where code = ?", [receivingCode]);
-        return result.rowCount != 0;
-    }
-
-    public static generateRandomSixDigitNumber() {
-        return Math.floor(100000 + Math.random() * 900000);
-    }
 
 }
