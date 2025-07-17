@@ -21,6 +21,10 @@ This backend is part of the parent project [`drophere`](https://github.com/your-
 Backend/
 ├── src/
 │   ├── config/           # Firebase & environment setup
+│   ├── Controllers/      # Core Business Logic attached with postgres DB
+│   ├── Errors/           # Errors and types
+│   ├── Modules/          # Abstraction for API to core business logic
+│   ├── MiddleWare/       # Request Middlewares
 │   ├── services/         # Signaling logic, peer session control
 │   ├── routes/           # Express API endpoints
 │   ├── utils/            # Crypto helpers, validation, etc.
