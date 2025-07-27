@@ -32,7 +32,6 @@ class FileTransferController {
 
         if(transferRow.type!=TransferType.FILE) throw new TransferError(TransferErrorType.MISMATCHED_RECORD_TYPE)
 
-
         const result = await pool.query<FileRow>("Select sender_peer_id from files where code = ?",[receivingCode])
 
         return result.rows[0].sender_peer_id;

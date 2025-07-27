@@ -1,7 +1,7 @@
 # 🌐 Drophere
 
 **Drophere** is a privacy-first, peer-to-peer (P2P) messaging and file transfer platform powered by **WebRTC**, 
-**Firebase signaling**, and **modular microservices**. The core principle: **no data stored, no surveillance** — just
+**PeerJS signaling**, and **modular microservices**. The core principle: **no data stored, no surveillance** — just
 ephemeral, encrypted communication between peers.
 
 This monorepo contains both the frontend client and backend signaling service.
@@ -12,9 +12,10 @@ This monorepo contains both the frontend client and backend signaling service.
 
 ````
 drophere/
-├── backend/         # Node.js microservice for signaling (Firebase, pluggable)
+├── backend/         # Node.js microservice for signaling (PeerJS, pluggable)
 ├── frontend/        # Web client using WebRTC for direct peer connection
 ├── README.md        # You are here
+├── init.sql        # Postgresql Initialisation Script
 └── LICENSE
 ````
 
@@ -22,9 +23,9 @@ drophere/
 
 Frontend – HTML + JavaScript (Next.js) + WebRTC
 
-Backend – Node.js + Express + Firebase (as default signaler)
+Backend – Node.js + Express + PeerJS (as default signaler)
 
-Signaling – Firebase Realtime Database (replaceable)
+Signaling – PeerJS (replaceable)
 
 Architecture – Microservices, plug-and-play signaling modules
 
@@ -33,15 +34,15 @@ Architecture – Microservices, plug-and-play signaling modules
 ### 1. Clone the Repo
 
 ```bash
-    git clone https://github.com/your-org/drophere.git
+    git clone https://github.com/avinash99b/drophere.git
     cd drophere
 ```
 
 ### 2. Setup Backend
 
 ```bash
-    cd Backend
-    cp .env.example .env  # Configure Firebase credentials
+    cd backend
+    cp .env.example .env  # Configure Environment Variables
     npm install
     npm start
 ```
@@ -49,7 +50,7 @@ Architecture – Microservices, plug-and-play signaling modules
 ### 3. Setup Frontend
 
 ```bash
-   cd ../Frontend
+   cd ../frontend
 ```
 
 ## Open index.html in a browser or serve using a local server (e.g. Live Server)
@@ -68,7 +69,7 @@ Backend on any Node-compatible host (e.g., Render, Railway, Firebase Cloud Funct
 
 Each module can be swapped:
 
-Want Redis or WebSocket instead of Firebase? Swap backend signaling.
+Want Redis or WebSocket instead of PeerJS? Swap backend signaling.
 
 Want React instead of Next.js? Replace frontend structure.
 

@@ -1,0 +1,39 @@
+{"address":"127.0.0.1","code":"ECONNREFUSED","errno":-111,"level":"error","message":"DB connection error: connect ECONNREFUSED 127.0.0.1:5432","port":5432,"stack":"Error: connect ECONNREFUSED 127.0.0.1:5432\n    at /home/avinash/Projects/DropHere/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at initDB (/home/avinash/Projects/DropHere/backend/src/config/DBConfig.ts:19:9)\n    at <anonymous> (/home/avinash/Projects/DropHere/backend/src/index.ts:14:9)","syscall":"connect","timestamp":"2025-07-27T04:23:41.191Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:26:38.285Z"}
+{"level":"error","message":"DB connection error: argument handler must be a function","stack":"TypeError: argument handler must be a function\n    at Function.use (/home/avinash/Projects/DropHere/backend/node_modules/router/index.js:392:13)\n    at express (/home/avinash/Projects/DropHere/backend/src/routes/transfer/index.ts:5:5)\n    at Object.<anonymous> (/home/avinash/Projects/DropHere/backend/src/routes/transfer/index.ts:7:18)\n    at Module._compile (node:internal/modules/cjs/loader:1356:14)\n    at Object.transformer (/snap/intellij-idea-ultimate/632/plugins/nodeJS/js/ts-file-loader/node_modules/tsx/dist/register-DfubRCxM.cjs:2:823)\n    at Module.load (node:internal/modules/cjs/loader:1197:32)\n    at Module._load (node:internal/modules/cjs/loader:1013:12)\n    at Module.require (node:internal/modules/cjs/loader:1225:19)\n    at require (node:internal/modules/helpers:177:18)\n    at <anonymous> (/home/avinash/Projects/DropHere/backend/src/routes/router.ts:8:23)","timestamp":"2025-07-27T04:26:38.730Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:27:10.161Z"}
+{"level":"error","message":"DB connection error: argument handler must be a function","stack":"TypeError: argument handler must be a function\n    at Function.use (/home/avinash/Projects/DropHere/backend/node_modules/router/index.js:392:13)\n    at express (/home/avinash/Projects/DropHere/backend/src/routes/transfer/index.ts:5:5)\n    at Object.<anonymous> (/home/avinash/Projects/DropHere/backend/src/routes/transfer/index.ts:7:18)\n    at Module._compile (node:internal/modules/cjs/loader:1356:14)\n    at Object.transformer (/snap/intellij-idea-ultimate/632/plugins/nodeJS/js/ts-file-loader/node_modules/tsx/dist/register-DfubRCxM.cjs:2:823)\n    at Module.load (node:internal/modules/cjs/loader:1197:32)\n    at Module._load (node:internal/modules/cjs/loader:1013:12)\n    at Module.require (node:internal/modules/cjs/loader:1225:19)\n    at require (node:internal/modules/helpers:177:18)\n    at <anonymous> (/home/avinash/Projects/DropHere/backend/src/routes/router.ts:8:23)","timestamp":"2025-07-27T04:27:10.235Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:27:47.508Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:30:58.028Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:31:44.315Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:31:44.321Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:32:34.387Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:32:34.391Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:35:24.620Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:35:24.625Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:37:28.511Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:37:28.515Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:40:07.210Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:40:07.215Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-27T04:40:07.645Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:41:37.303Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:41:37.307Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-27T04:41:37.675Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:44:17.957Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:44:17.961Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-27T04:44:18.337Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T04:44:42.965Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T04:44:42.969Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-27T04:44:43.383Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:16:52.019Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T08:16:52.025Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:18:06.835Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:18:13.992Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T08:18:13.998Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:20:44.504Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T08:20:44.510Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:21:30.551Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T08:21:30.555Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-27T08:23:37.909Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-27T08:23:37.915Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-27T08:23:38.316Z"}

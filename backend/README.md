@@ -1,16 +1,18 @@
 # 🔧 Drophere Backend
 
-The **Drophere Backend** handles the core signaling, encryption utility endpoints (if any), and supports establishing **peer-to-peer (P2P)** encrypted messaging and file transfer using **Firebase Realtime Database** as a signaling mechanism.
+The **Drophere Backend** handles the core signaling, and supports establishing **peer-to-peer (P2P)** encrypted
+messaging and file transfer using **PeerJS** as a signaling mechanism.
 
-This backend is part of the parent project [`drophere`](https://github.com/your-org/drophere), designed with a **modular microservice architecture** to ensure flexibility and replaceability of core components like signaling and encryption.
+This backend is part of the parent project [`drophere`](https://github.com/avinash99b/drophere), designed with a *
+*modular microservice architecture** to ensure flexibility and replaceability of core components like signaling and
+encryption.
 
 ---
 
 ## 🚀 Tech Stack
 
 - **Node.js + Express** – Lightweight REST API server
-- **Firebase Realtime Database** – Used for peer signaling and connection initiation
-- **WebSockets (future-ready)** – Placeholder for alternative signaling layers
+- **PeerJS** – Used for peer signaling and connection initiation
 - **Modular/Micro Structure** – Swappable signaling modules (Firebase, Redis, WebSocket, etc.)
 
 ---
@@ -23,7 +25,7 @@ Backend/
 │   ├── config/           # Firebase & environment setup
 │   ├── Controllers/      # Core Business Logic attached with postgres DB
 │   ├── Errors/           # Errors and types
-│   ├── Modules/          # Abstraction for API to core business logic
+│   ├── ValidatorTypes/   # Express-Validator type declarations
 │   ├── MiddleWare/       # Request Middlewares
 │   ├── services/         # Signaling logic, peer session control
 │   ├── routes/           # Express API endpoints
@@ -55,11 +57,7 @@ Create a `.env` file in the root of the `Backend/` folder using the provided `.e
 
 ```env
 PORT=3001
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_API_KEY=your-api-key
-FIREBASE_DB_URL=https://your-project-id.firebaseio.com
-FIREBASE_CLIENT_EMAIL=your-client-email
-FIREBASE_PRIVATE_KEY=your-private-key
+DATABASE_URL=YOUR_DATABASE_URL
 ```
 
 > ⚠️ Make sure to escape `\n` in private keys when pasting into `.env`
@@ -71,7 +69,7 @@ FIREBASE_PRIVATE_KEY=your-private-key
 ### 1. Clone the Backend (if standalone):
 
 ```bash
-git clone https://github.com/your-org/drophere-backend.git
+git clone https://github.com/avinash99b/drophere-backend.git
 cd drophere-backend
 ```
 
@@ -81,12 +79,12 @@ cd drophere-backend
 npm install
 ```
 
-### 3. Configure Firebase
+### 3. Configure Postgresql
 
-* Go to [Firebase Console](https://console.firebase.google.com/)
-* Create a Realtime Database project.
-* Add a service account and download the credentials JSON.
-* Replace service-account.json with your credentials.
+* The Postgresql service will automatically be created when launched with docker image
+* If u want to use custom postgresql server, just replace the DATABASE_URL environment variable with custom Postgresql
+  server.
+* U can use the init.sql file located at [`init.sql`](https://github.com/avinash99b/drophere/init.sql)
 
 ### 4. Run the Backend
 
@@ -100,28 +98,28 @@ The server will run at `http://localhost:3001`
 
 ## 🧠 Microservice Architecture
 
-This backend is **only one module** in the larger `drophere` system. Each part (signaling, encryption, WebRTC peer management) can be replaced or scaled independently.
+This backend is **only one module** in the larger `drophere` system. Each part (signaling, encryption, WebRTC peer
+management) can be replaced or scaled independently.
 
-Want to replace Firebase signaling with Redis or WebSockets?
+Want to replace PeerJS signaling with Redis or WebSockets?
 
-* Write a new adapter in `services/signaling/`
-* Swap out `firebaseSignaler` in `index.js`
+* Modify the FileTransferController in `Controllers/FileTransferController`
+* Swap out `FileTransferController` with `Firebase Realtime Database`
 
 ---
 
 ## 📡 API Overview
 
-While most of the P2P communication is handled via **Firebase** + **WebRTC**, this backend can expose optional HTTP APIs for:
+While most of the P2P communication is handled via **PeerJS** + **WebRTC**, this backend can expose optional HTTP APIs
+for:
 
-| Endpoint                | Description                       |
-| ----------------------- | --------------------------------- |
-| `POST /signal/offer`    | Post a WebRTC offer to Firebase   |
-| `POST /signal/answer`   | Post an answer                    |
-| `GET /signal/:peerId`   | Retrieve peer signal              |
-| `POST /cleanup/:peerId` | Optional: clear expired peer data |
-| (optional) `/health`    | Check backend status              |
+| Endpoint                          | Description                                |
+|-----------------------------------|--------------------------------------------|
+| `POST /transfer/create?type=file` | Creates a File Transfer Request in Server  |
+| `GET /transfer/file/676483`       | Returns the Sender PeerJS Id to connect to |
+| (optional) `/health`              | Check backend status                       |
 
-> Note: These are optional REST routes. Most signaling is handled in real time by Firebase client SDK in the frontend.
+> Note: These are optional REST routes. Most signaling is handled in real time by PeerJS SDK in the frontend.
 
 ---
 
@@ -135,7 +133,7 @@ While most of the P2P communication is handled via **Firebase** + **WebRTC**, th
 
 ## 🧪 Testing
 
-You can test backend endpoints using tools like Postman or curl. For signaling test cases, make sure the Firebase DB is connected and the frontend PeerJS instances are running.
+You can test backend endpoints using tools like Postman or curl. For signaling test cases, make sure the Postgresql DB is connected and the frontend instances are running.
 
 ---
 
@@ -151,7 +149,7 @@ We welcome contributions! This backend is intended to be modular, swappable, and
 
 ```bash
 # To add a new signaling service
-src/services/signaling/myCustomSignaler.js
+src/Modules/signaling/myCustomSignaler.ts
 ```
 
 ---
@@ -159,8 +157,3 @@ src/services/signaling/myCustomSignaler.js
 ## 📬 Contact
 
 Need help or want to contribute? Join the project on GitHub or reach out via issues or discussions.
-
-```
-
-Let me know if you'd like the matching `README.md` for the `Frontend` submodule next.
-```

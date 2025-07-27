@@ -1,6 +1,9 @@
 import firebase from 'firebase-admin';
+import "dotenv/config"
 
-const serviceAccount = require("../../service-account.json")
+const serviceAccountPath = process.env.SECRETS_DIR + "/service-account.json";
+
+const serviceAccount = require(serviceAccountPath);
 
 const admin = firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),

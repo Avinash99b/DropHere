@@ -1,4 +1,4 @@
 node_modules
 .idea
-service-account.json
+secrets/service-account.json
 .env

@@ -9,6 +9,9 @@ const pool = new Pool({
     keepAlive: true,
 })
 
+pool.on("connect",(client)=>{
+    logger.info("Database Connected")
+})
 pool.on("error", (err) => {
     logger.error("DB connection error:", err)
     console.error(err)

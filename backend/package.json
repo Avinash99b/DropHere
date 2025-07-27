@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -25,12 +25,17 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
     "firebase-admin": "^13.3.0",
+    "install": "^0.13.0",
+    "npm": "^11.4.2",
     "pg": "^8.16.3",
+    "validatorjs": "^3.22.1",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@types/express-validator": "^3.0.2",
     "@types/pg": "^8.15.4",
     "node-typescript": "^0.1.3"
   }

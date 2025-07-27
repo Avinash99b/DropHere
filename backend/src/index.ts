@@ -1,47 +1,41 @@
-import firebase from "./config/FirebaseConfig";
-import express, { Request, Response, NextFunction } from "express";
-import cors from "cors";
-import  "dotenv/config";
-import AppError from "./Errors/AppError";
+import express from "express";
+import "dotenv/config";
 import {logger} from "./Utils/Logger";
-import {errorHandler} from "./Middleware/ErrorHandler";
 import {initDB} from "./config/DBConfig";
 
 const PORT = process.env.PORT || 3000;
 
 (async () => {
-    try{
+    try {
         await initDB()
+
         logger.info("DB connection started")
 
+        checkEnvVariables();
+
+        logger.info("Environment variables checked successfully");
+
         startWebServerSetup()
-    }catch(err){
-        logger.error("DB connection error:", err)
+        logger.info("Web server setup completed successfully");
+    } catch (err) {
+        logger.error("StartUp Failed:", err)
+        throw err;
     }
 })()
+//TODO:Continue with the rest of the code
 
+function checkEnvVariables() {
+    const requiredEnvVars = ["PORT", "DATABASE_URL", "SECRETS_DIR"];
+    requiredEnvVars.forEach((envVar) => {
+        if (!process.env[envVar]) {
+            logger.error(`Missing environment variable: ${envVar}`);
+            throw new Error(`Missing environment variable: ${envVar}`);
+        }
+    });
+}
 
-function startWebServerSetup(){
-    const app = express();
-
-    //Using Cors to allow cross-origin requests
-    app.use(cors());
-
-    app.use(express.json());
-
-    app.use(express.urlencoded({ extended: true }));
-
-    app.use(require("./routes/router"));
-
-    app.use((req, res) => {
-        res.status(404).json({
-            status: "error",
-            message: "Route not found",
-        });
-    })
-
-    app.use(errorHandler)
-
+function startWebServerSetup() {
+    const app = require("./app")
     app.listen(PORT, () => {
         logger.info(`Server is running on port ${PORT}`);
         console.log(`Server is running on port ${PORT}`);

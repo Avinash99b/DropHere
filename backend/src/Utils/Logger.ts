@@ -2,19 +2,14 @@
 import { createLogger, format, transports } from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 
-const { combine, timestamp, printf, errors, json } = format;
-
-// Custom log format
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-    return `${timestamp} [${level.toUpperCase()}]: ${stack || message}`;
-});
+const { combine, timestamp, errors, json } = format;
 
 export const logger = createLogger({
     level: "info",
     format: combine(
         timestamp(),
-        errors({ stack: true }), // Capture stack trace if error object
-        logFormat
+        errors({ stack: true }), // Include error stack if available
+        json()                   // Output logs in JSON format
     ),
     transports: [
         new transports.Console(),
@@ -22,11 +17,22 @@ export const logger = createLogger({
             filename: "logs/app-%DATE%.log",
             datePattern: "YYYY-MM-DD",
             maxFiles: "7d",
+            format: combine(
+                timestamp(),
+                errors({ stack: true }),
+                json()
+            ),
         }),
     ],
 });
 
 // Shortcut functions
-export const logInfo = (msg: string, meta?: any) => logger.info(msg, meta);
+export const logInfo = (msg: string, meta?: any) =>
+    logger.info(msg, meta);
+
 export const logError = (err: Error, meta?: any) =>
-    logger.error(err.stack || err.message, meta);
+    logger.error({
+        message: err.message,
+        stack: err.stack,
+        ...meta
+    });
