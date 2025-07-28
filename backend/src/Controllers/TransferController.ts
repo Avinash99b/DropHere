@@ -1,6 +1,7 @@
 import pool from "../config/DBConfig";
 import {TransferRow, TransferType} from "../Types/Transfer";
 import {PoolClient} from "pg";
+import {logger} from "../Utils/Logger";
 
 class TransferController{
     static MAX_CODE_GEN_RETRIES = 5;
@@ -18,19 +19,20 @@ class TransferController{
             if (i == this.MAX_CODE_GEN_RETRIES - 1) throw new Error("Code Generation Failed for tries: " + this.MAX_CODE_GEN_RETRIES);
         }
 
-        await conn.query("Insert into transfers(code,type) values (?,?)", [code, type])
+        logger.info("Creating transfer record with code:", code, "and type:", type)
+        await conn.query("Insert into transfers(code,type) values ($1,$2)", [code, type])
 
         return code
     }
 
 
     public static async transferCodeExists(receivingCode: string|number): Promise<boolean> {
-        const result = await pool.query("Select count(*) from transfers where code = ?", [receivingCode]);
-        return result.rowCount != 0;
+        const result = await pool.query("Select count(*) from transfers where code = $1", [receivingCode]);
+        return parseInt(result.rows[0].count) > 0;
     }
 
     public static async getTransferRecord(receivingCode: string): Promise<TransferRow> {
-        const result = await pool.query<TransferRow>("Select * from transfers where code = ?", [receivingCode]);
+        const result = await pool.query<TransferRow>("Select * from transfers where code = $1", [receivingCode]);
         return result.rows[0];
     }
 

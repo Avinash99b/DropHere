@@ -1,6 +1,6 @@
 import {param, body, check, validationResult} from 'express-validator';
 
-export const TextReceivingValidator = [
+export const ReceivingCodeValidator = [
     param("receivingCode").isNumeric().isLength({min: 6, max: 6}).withMessage("Invalid Receiving Code")
 ]
 
@@ -41,4 +41,11 @@ export const TextStoreValidator = [
 
             return true;
         })
+]
+
+export const PeerJsIdValidator = [
+    body('sender_peer_id')
+        .isString().withMessage("sender_peer_id must be a string")
+        .isLength({min: 1, max: 100}).withMessage("sender_peer_id must not be empty")
+        .matches(/^[a-zA-Z0-9_-]+$/).withMessage("sender_peer_id must be alphanumeric with optional underscores or hyphens")
 ]

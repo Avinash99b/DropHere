@@ -7,6 +7,24 @@ import {TextRow} from "../Types/Text";
 
 class TextTransferController {
 
+    static {
+        logger.info("TextTransferController initialized");
+
+        //Keeps fetching transfers of type text every 2 mins and expires them if they are older than 5 mins
+        setInterval(async () => {
+            try {
+                const conn = await pool.connect();
+                await conn.query("BEGIN");
+                await conn.query("DELETE FROM transfers WHERE type = $1 AND created_at < NOW() - INTERVAL '5 minutes'", [TransferType.TEXT]);
+                await conn.query("COMMIT");
+                conn.release();
+                logger.info("Expired old text transfers");
+            } catch (e: any) {
+                logger.error(e, "Failed to expire old text transfers");
+            }
+        }, 2 * 60 * 1000); // 2 minutes
+    }
+
     /**
      * Stores the given text in the database and creates a transfer record.
      * @param text The text to be stored.
@@ -19,8 +37,8 @@ class TextTransferController {
             const conn = await pool.connect();
             await conn.query("BEGIN")
             try{
-                const code = TransferController.createTransferRecord(TransferType.TEXT, conn)
-                await pool.query("Insert into texts(code,text) values (?,?)", [code, text])
+                const code =await TransferController.createTransferRecord(TransferType.TEXT, conn)
+                await conn.query("Insert into texts(code,text) values ($1,$2)", [code, text])
                 await conn.query("COMMIT")
                 resolve(code)
             }catch (e:any){
@@ -44,7 +62,7 @@ class TextTransferController {
 
         if(transferRecord.type != TransferType.TEXT) throw new TransferError(TransferErrorType.MISMATCHED_RECORD_TYPE);
 
-        const result = await pool.query<TextRow>("Select text from texts where code = ?", [receivingCode]);
+        const result = await pool.query<TextRow>("Select text from texts where code = $1", [receivingCode]);
         return result.rows[0].text
     }
 

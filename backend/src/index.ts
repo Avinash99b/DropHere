@@ -22,7 +22,6 @@ const PORT = process.env.PORT || 3000;
         throw err;
     }
 })()
-//TODO:Continue with the rest of the code
 
 function checkEnvVariables() {
     const requiredEnvVars = ["PORT", "DATABASE_URL", "SECRETS_DIR"];

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS public.transfers
     type transfer_type NOT NULL DEFAULT 'text'::transfer_type,
     created_at timestamp(0) with time zone NOT NULL DEFAULT now(),
     CONSTRAINT text_transfer_codes_pkey PRIMARY KEY (code)
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS public.texts
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS public.texts
         REFERENCES public.transfers (code) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.files
 (
@@ -30,5 +30,4 @@ CREATE TABLE IF NOT EXISTS public.files
         REFERENCES public.transfers (code) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
-        NOT VALID
-)
+);

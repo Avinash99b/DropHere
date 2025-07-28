@@ -1,9 +1,24 @@
-version '1.0
-
 services:
   text-server:
     build: .
+    working_dir: /app
     ports:
       - "3000:3000"
     volumes:
-      - "./src/"
+      - "./:/app"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: TEST
+      POSTGRES_PASSWORD: TEST
+      POSTGRES_DB: TEST
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
