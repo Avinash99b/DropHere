@@ -1,0 +1,172 @@
+openapi: 3.0.0
+
+info:
+  title: TextTransfer
+  description: Handle Text Transfer
+  version: "1.0.0"
+  
+servers:
+  - url: https://api.backend.avinash9.tech
+  
+paths:
+  /transfer/{receivingCode}:
+    get:
+      summary: Get Transfer Record (Text or File)
+      description: Returns metadata for a transfer record with the given receiving code.
+      tags:
+        - Receiving Code
+      parameters:
+        - name: receivingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Transfer record successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    example: 127916
+                  type:
+                    type: string
+                    enum: [text, file]
+                    example: "text"
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2025-07-29T09:20:03.000Z"
+        "404":
+          $ref: "#/components/responses/NOT_FOUND_ERROR"
+        "400":
+          $ref: '#/components/responses/MISMATCHED_TRANSFER_ERROR'
+
+  /transfer/text/{receivingCode}:
+    get:
+      summary: Get The Text
+      description: Fetches the text with associated receiving code.
+      tags:
+        - Receiving Code
+      parameters:
+        - name: receivingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Text associated with that receiving code encoded in Base64.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text: 
+                    type: string
+        "404":
+          $ref: "#/components/responses/NOT_FOUND_ERROR"
+        "400":
+          $ref: '#/components/responses/MISMATCHED_TRANSFER_ERROR'
+
+  /transfer/text/:
+    post:
+      summary: "Store the provided base64 text in server"
+      description: "Stores the text in server and returns a 6 digit receiving code. Base64 encoding is mandatory"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  example: "SGVsbG8gV29ybGQ="
+      responses:
+        "201":
+          description: Text Storing Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  receivingCode: 
+                    type: number
+        "404":
+          $ref: "#/components/responses/NOT_FOUND_ERROR"
+        "400":
+          $ref: '#/components/responses/MISMATCHED_TRANSFER_ERROR'
+
+  /transfer/file/{receivingCode}:
+    get:
+      summary: Get The Senders PeerJS Id.
+      description: Fetches the PeerJS ID with associated receiving code.
+      tags:
+        - Receiving Code
+      parameters:
+        - name: receivingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: PeerJS ID associated with that receiving code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sender_peer_id: 
+                    type: string
+        "404":
+          $ref: "#/components/responses/NOT_FOUND_ERROR"
+        "400":
+          $ref: '#/components/responses/MISMATCHED_TRANSFER_ERROR'
+
+  /transfer/file/:
+    post:
+      summary: Store the PeerJS ID in server
+      description: Stores the PeerJS ID in server and returns a 6 digit receiving code.
+      responses:
+        "201":
+          description: File transfer storing success.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  receivingCode: 
+                    type: number
+        "404":
+          $ref: "#/components/responses/NOT_FOUND_ERROR"
+        "400":
+          $ref: '#/components/responses/MISMATCHED_TRANSFER_ERROR'
+
+components:
+  responses:
+    MISMATCHED_TRANSFER_ERROR:
+      description: States that the transfer does exist but is not the specified type. Meaning the request tried to receive text instead of file or vice versa.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: 
+                type: string
+                example: "Mismatched record type"
+
+    NOT_FOUND_ERROR:
+      description: States that the associated text with that receiving code doesn't exist or expired.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: 
+                type: string
+                example: "Not Found"
