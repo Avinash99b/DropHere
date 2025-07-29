@@ -1,0 +1,8 @@
+{"code":"ENOTFOUND","errno":-3008,"hostname":"postgres_db","level":"error","message":"DB connection error: getaddrinfo ENOTFOUND postgres_db","stack":"Error: getaddrinfo ENOTFOUND postgres_db\n    at /home/avinash/Projects/DropHere/backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","syscall":"getaddrinfo","timestamp":"2025-07-29T06:16:56.922Z"}
+{"level":"info","message":"Database Connected","timestamp":"2025-07-29T06:35:59.839Z"}
+{"level":"info","message":"DB connection started","timestamp":"2025-07-29T06:35:59.873Z"}
+{"level":"info","message":"Environment variables checked successfully","timestamp":"2025-07-29T06:35:59.874Z"}
+{"level":"info","message":"TextTransferController initialized","timestamp":"2025-07-29T06:36:00.574Z"}
+{"level":"info","message":"FileTransferController initialized","timestamp":"2025-07-29T06:36:00.717Z"}
+{"level":"info","message":"Web server setup completed successfully","timestamp":"2025-07-29T06:36:00.725Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-29T06:36:00.725Z"}

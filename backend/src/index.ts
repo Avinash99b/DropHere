@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 3000;
 })()
 
 function checkEnvVariables() {
-    const requiredEnvVars = ["PORT", "DATABASE_URL", "SECRETS_DIR"];
+    const requiredEnvVars = ["PORT", "DATABASE_URL"];
     requiredEnvVars.forEach((envVar) => {
         if (!process.env[envVar]) {
             logger.error(`Missing environment variable: ${envVar}`);

@@ -1,4 +1,3 @@
-import firebase from "./config/FirebaseConfig";
 import express, {Request, Response, NextFunction} from "express";
 import cors from "cors";
 import {errorHandler} from "./Middleware/ErrorHandler";
