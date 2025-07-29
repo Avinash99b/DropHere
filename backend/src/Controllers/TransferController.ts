@@ -2,6 +2,7 @@ import pool from "../config/DBConfig";
 import {TransferRow, TransferType} from "../Types/Transfer";
 import {PoolClient} from "pg";
 import {logger} from "../Utils/Logger";
+import {TransferError, TransferErrorType} from "../Errors/TransferError";
 
 class TransferController{
     static MAX_CODE_GEN_RETRIES = 5;
@@ -33,6 +34,9 @@ class TransferController{
 
     public static async getTransferRecord(receivingCode: string): Promise<TransferRow> {
         const result = await pool.query<TransferRow>("Select * from transfers where code = $1", [receivingCode]);
+        if( result.rows.length === 0) {
+            throw new TransferError(TransferErrorType.TRANSFER_RECORD_NOT_FOUND)
+        }
         return result.rows[0];
     }
 

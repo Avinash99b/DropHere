@@ -1,11 +1,8 @@
 import express from "express";
-
+import TransferRouter from "./transfer"
 const router = express.Router();
 
-// Importing all routes
-router.use("/health", require("./health"));
-
-router.use("/transfer", require("./transfer"));
+router.use("/transfer", TransferRouter);
 
 
-module.exports = router;
+export default router;

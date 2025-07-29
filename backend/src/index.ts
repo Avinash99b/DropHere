@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import {logger} from "./Utils/Logger";
 import {initDB} from "./config/DBConfig";
+import App from "./app";
 
 const PORT = process.env.PORT || 3000;
 
@@ -34,8 +35,7 @@ function checkEnvVariables() {
 }
 
 function startWebServerSetup() {
-    const app = require("./app")
-    app.listen(PORT, () => {
+    App.listen(PORT, () => {
         logger.info(`Server is running on port ${PORT}`);
         console.log(`Server is running on port ${PORT}`);
     });
