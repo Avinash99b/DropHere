@@ -44,7 +44,6 @@ export default function ReceiveCard() {
         description: error.message,
         variant: 'destructive',
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -55,7 +54,7 @@ export default function ReceiveCard() {
         <p className="text-muted-foreground text-center mb-8">Enter it below to retrieve your content.</p>
         <Card className="shadow-lg">
             <CardContent className="p-6">
-                <form onSubmit={handleReceive} className="flex w-full items-center space-x-2">
+                <form onSubmit={handleReceive} className="flex flex-col sm:flex-row w-full items-center space-y-2 sm:space-y-0 sm:space-x-2">
                   <Input 
                     type="text" 
                     placeholder="Enter code..." 
@@ -66,7 +65,7 @@ export default function ReceiveCard() {
                     disabled={isLoading}
                     maxLength={6}
                   />
-                  <Button type="submit" size="lg" className="h-12" disabled={isLoading || !code}>
+                  <Button type="submit" size="lg" className="h-12 w-full sm:w-auto" disabled={isLoading || !code}>
                     {isLoading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (

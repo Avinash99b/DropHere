@@ -1,8 +1,7 @@
-import type { NextConfig } from 'next';
-import path from 'path';
+import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {},
+  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -20,7 +19,6 @@ const nextConfig: NextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    config.resolve.alias['@'] = path.resolve(__dirname, './src');
     config.externals.push({
       'supports-color': 'commonjs supports-color',
     });
