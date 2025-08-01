@@ -2,3 +2,4 @@ node_modules
 .idea
 secrets/service-account.json
 .env
+logs

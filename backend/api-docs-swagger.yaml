@@ -86,6 +86,12 @@ paths:
                 text:
                   type: string
                   example: "SGVsbG8gV29ybGQ="
+                  required: true
+                expires_at:
+                  type: string
+                  format: date-time
+                  example: "2025-07-29T09:20:03.000Z"
+                  required: true
       responses:
         "201":
           description: Text Storing Success.

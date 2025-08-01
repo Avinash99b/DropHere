@@ -9,35 +9,22 @@ class TextTransferController {
 
     static {
         logger.info("TextTransferController initialized");
-
-        //Keeps fetching transfers of type text every 2 mins and expires them if they are older than 5 mins
-        setInterval(async () => {
-            try {
-                const conn = await pool.connect();
-                await conn.query("BEGIN");
-                await conn.query("DELETE FROM transfers WHERE type = $1 AND created_at < NOW() - INTERVAL '5 minutes'", [TransferType.TEXT]);
-                await conn.query("COMMIT");
-                conn.release();
-                logger.info("Expired old text transfers");
-            } catch (e: any) {
-                logger.error(e, "Failed to expire old text transfers");
-            }
-        }, 2 * 60 * 1000); // 2 minutes
     }
 
     /**
      * Stores the given text in the database and creates a transfer record.
      * @param text The text to be stored.
+     * @param expires_at The expiration date for the transfer record.
      * @returns A promise that resolves to the receiving code of the transfer record.
      * @throws TransferError if the transfer record creation fails.
      */
-    public static storeText(text: string): Promise<number> {
+    public static storeText(text: string,expires_at:string): Promise<number> {
 
         return new Promise(async (resolve, reject) => {
             const conn = await pool.connect();
             await conn.query("BEGIN")
             try{
-                const code =await TransferController.createTransferRecord(TransferType.TEXT, conn)
+                const code =await TransferController.createTransferRecord(TransferType.TEXT, conn,expires_at)
                 await conn.query("Insert into texts(code,text) values ($1,$2)", [code, text])
                 await conn.query("COMMIT")
                 resolve(code)

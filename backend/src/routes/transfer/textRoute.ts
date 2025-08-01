@@ -36,8 +36,8 @@ app.post("/", TextStoreValidator, (req: Request, res: Response) => {
         res.status(400).json({errors: errors.array()});
         return;
     }
-    const {text} = req.body;
-    TextTransferController.storeText(text).then((code) => {
+    const {text,expires_at} = req.body;
+    TextTransferController.storeText(text,expires_at).then((code) => {
         res.status(201).json({receivingCode: code});
     }).catch((err: TransferError) => {
         if (err.TYPE === TransferErrorType.CREATE_TRANSFER_FAILED) {

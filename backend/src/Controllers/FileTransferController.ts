@@ -10,19 +10,6 @@ class FileTransferController {
     static {
         logger.info("FileTransferController initialized");
 
-        //Keeps fetching transfers of type file every 2 mins and expires them if they are older than 5 mins
-        setInterval(async () => {
-            try {
-                const conn = await pool.connect();
-                await conn.query("BEGIN");
-                await conn.query("DELETE FROM transfers WHERE type = $1 AND created_at < NOW() - INTERVAL '5 minutes'", [TransferType.FILE]);
-                await conn.query("COMMIT");
-                conn.release();
-                logger.info("Expired old file transfers");
-            } catch (e: any) {
-                logger.error(e, "Failed to expire old file transfers");
-            }
-        }, 2 * 60 * 1000); // 2 minutes
     }
     /**
      * Creates a file transfer record in the database.

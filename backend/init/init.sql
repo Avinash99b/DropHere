@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS public.transfers
     code integer NOT NULL,
     type transfer_type NOT NULL DEFAULT 'text'::transfer_type,
     created_at timestamp(0) with time zone NOT NULL DEFAULT now(),
+    expires_at timestamp(0) with time zone NOT NULL DEFAULT now() + interval '1 day',
     CONSTRAINT text_transfer_codes_pkey PRIMARY KEY (code)
 );
 

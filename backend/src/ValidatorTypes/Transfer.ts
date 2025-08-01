@@ -40,6 +40,17 @@ export const TextStoreValidator = [
             }
 
             return true;
+        }),
+    body('expires_at').isString()
+        .custom(value => {
+            if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)) {
+                throw new Error('Date must be in the format YYYY-MM-DDTHH:mm:ss.sssZ');
+            }
+            // Check if the date is in the future
+            if (new Date(value).getTime() <= Date.now()) {
+                throw new Error("expires_at must be a future date");
+            }
+            return value;
         })
 ]
 
