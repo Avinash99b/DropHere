@@ -8,6 +8,11 @@ This monorepo contains both the frontend client and backend signaling service.
 
 ---
 
+## 🧰 Poof of Work
+
+![Drophere Poof of Work](assets/drophere-pow.png)
+
+
 ## 🧩 Project Structure
 
 ````
