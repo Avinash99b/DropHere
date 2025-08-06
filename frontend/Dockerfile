@@ -3,12 +3,20 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Accept env variable as build ARG
+ARG NEXT_PUBLIC_GA_ID
+ENV NEXT_PUBLIC_GA_ID=$NEXT_PUBLIC_GA_ID
+
 # 2. Install only prod dependencies
 COPY package.json package-lock.json* ./
 RUN npm ci
 
 # 3. Copy all files and build
 COPY . .
+
+# Add debug log (optional)
+RUN echo "GA ID during build: $NEXT_PUBLIC_GA_ID"
+
 RUN npm run build
 
 # 4. Production image
@@ -25,8 +33,6 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.ts ./next.config.ts
 
-# Expose production port
 EXPOSE 3000
 
-# Start Next.js app
 CMD ["npx", "next", "start"]
