@@ -3,3 +3,4 @@ node_modules
 secrets/service-account.json
 .env
 logs
+tmpScripts
