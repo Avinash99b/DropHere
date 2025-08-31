@@ -10,13 +10,21 @@ export default function Footer() {
     <footer className="bg-card border-t mt-auto">
       <div className="container mx-auto py-12 px-4 md:px-6">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-2 col-span-1 lg:col-span-2">
+          <div className="space-y-2 col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-2 w-fit">
                 <Mountain className="h-6 w-6 text-primary" />
                 <span className="text-xl font-bold text-foreground">DropHere</span>
             </Link>
             <p className="text-sm text-muted-foreground">The simplest way to share files and text across your devices.</p>
             <p className="text-sm text-muted-foreground">© {currentYear} DropHere. All rights reserved.</p>
+          </div>
+           <div className="space-y-2">
+            <h4 className="font-semibold text-foreground">Company</h4>
+            <ul className="space-y-1">
+              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-primary transition-colors">How It Works</Link></li>
+               <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">FAQ</Link></li>
+            </ul>
           </div>
           <div className="space-y-2">
             <h4 className="font-semibold text-foreground">Legal</h4>

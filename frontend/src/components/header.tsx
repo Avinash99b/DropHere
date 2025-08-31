@@ -10,9 +10,23 @@ export default function Header() {
           <Mountain className="h-6 w-6 text-primary" />
           <span className="text-xl font-bold text-foreground">DropHere</span>
         </Link>
-        <nav>
+        <nav className="hidden md:flex items-center gap-2">
             <Button asChild variant="ghost">
-                <Link href="#transfer">Get Started</Link>
+                <Link href="/how-it-works">How It Works</Link>
+            </Button>
+            <Button asChild variant="ghost">
+                <Link href="/faq">FAQ</Link>
+            </Button>
+             <Button asChild variant="ghost">
+                <Link href="/about">About Us</Link>
+            </Button>
+            <Button asChild>
+                <Link href="/#transfer">Get Started</Link>
+            </Button>
+        </nav>
+        <nav className="md:hidden">
+            <Button asChild>
+                <Link href="/#transfer">Get Started</Link>
             </Button>
         </nav>
       </div>
